@@ -18,14 +18,13 @@ const getTopicById = async (id) => {
 
 export default async function EditTopic({ params }) {
   const { id } = params;
-  const topicData = await getTopicById(id);
+  const data = await getTopicById(id);
 
-  if (!topicData) {
-    // Handle the case where the topic could not be fetched
-    return <p>Topic not found</p>;
+  if (!data || !data.topic) {
+    return <div>Topic not found</div>;
   }
 
-  const { title, description } = topicData.topic;
+  const { title, description } = data.topic;
 
   return <EditTopicForm id={id} title={title} description={description} />;
 }
