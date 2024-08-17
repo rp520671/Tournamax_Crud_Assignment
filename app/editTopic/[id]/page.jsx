@@ -2,23 +2,20 @@ import EditTopicForm from "@/components/EditTopicForm";
 
 const getTopicById = async (id) => {
   try {
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'; // Fallback to local URL for local testing
-    const res = await fetch(`${apiUrl}/api/topics/${id}`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/topics/${id}`, {
       cache: "no-store",
     });
 
     if (!res.ok) {
-      console.error(`Error fetching topic: ${res.statusText}`);
-      throw new Error(`Failed to fetch topic: ${res.statusText}`);
+      throw new Error("Failed to fetch topic");
     }
 
     return res.json();
   } catch (error) {
     console.error("Error fetching topic:", error);
-    return { topic: " null" }; // Handle errors gracefully
+    return { topic: null }; // Return a default value to handle errors gracefully
   }
 };
-
 
 export default async function EditTopic({ params }) {
   const { id } = params;
