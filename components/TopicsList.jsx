@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import RemoveBtn from "./RemoveBtn";
@@ -49,8 +49,10 @@ const TopicsList = () => {
 
           <div className="flex gap-2">
             <RemoveBtn id={t._id} />
-            <Link href={`/editTopic/${t._id}`}>
-              <HiPencilAlt size={24} />
+            <Link href={`/editTopic/${t._id}`} passHref>
+              <a aria-label={`Edit ${t.title}`}>
+                <HiPencilAlt size={24} />
+              </a>
             </Link>
           </div>
         </div>

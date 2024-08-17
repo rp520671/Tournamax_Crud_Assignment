@@ -12,7 +12,8 @@ const getTopicById = async (id) => {
 
     return res.json();
   } catch (error) {
-    console.log(error);
+    console.error("Error fetching topic:", error);
+    return { topic: null }; // Return a default value to handle errors gracefully
   }
 };
 
@@ -20,8 +21,8 @@ export default async function EditTopic({ params }) {
   const { id } = params;
   const data = await getTopicById(id);
 
-  if (!data || !data.topic) {
-    return <div>Topic not found</div>;
+  if (!data.topic) {
+    return <div>Topic not found or failed to load.</div>; // Provide user feedback
   }
 
   const { title, description } = data.topic;
