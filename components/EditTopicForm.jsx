@@ -8,12 +8,12 @@ export default function EditTopicForm({ id, title, description }) {
   const [newDescription, setNewDescription] = useState(description);
 
   const router = useRouter();
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'; // Fallback to local URL for local testing
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'; // Fallback to local URL for local testing
       const res = await fetch(`${apiUrl}/api/topics/${id}`, {  // Updated URL format
         method: "PUT",
         headers: {
