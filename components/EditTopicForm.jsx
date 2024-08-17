@@ -13,7 +13,8 @@ export default function EditTopicForm({ id, title, description }) {
     e.preventDefault();
 
     try {
-      const res = await fetch(`/api/topics/${id}`, {  // Updated URL format
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'; // Fallback to local URL for local testing
+      const res = await fetch(`${apiUrl}/api/topics/${id}`, {  // Updated URL format
         method: "PUT",
         headers: {
           "Content-type": "application/json",
