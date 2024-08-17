@@ -1,51 +1,62 @@
+"use client"
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import RemoveBtn from "./RemoveBtn";
 import { HiPencilAlt } from "react-icons/hi";
 
-const getTopics = async () => {
-  try {
-    const res = await fetch("/api/topics", {
-      cache: "no-store",
-    });
+const TopicsList = () => {
+  const [topics, setTopics] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-    if (!res.ok) {
-      throw new Error("Failed to fetch topics");
-    }
+  useEffect(() => {
+    const fetchTopics = async () => {
+      try {
+        const res = await fetch("/api/topics", {
+          cache: "no-store",
+        });
 
-    return res.json();
-  } catch (error) {
-    console.error("Error loading topics: ", error);
-    return { topics: [] }; // Return an empty array on error
-  }
-};
+        if (!res.ok) {
+          throw new Error("Failed to fetch topics");
+        }
 
-export default async function TopicsList() {
-  const { topics } = await getTopics();
+        const data = await res.json();
+        setTopics(data.topics || []);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchTopics();
+  }, []);
+
+  if (loading) return <div>Loading topics...</div>;
+  if (error) return <div>Error loading topics: {error}</div>;
 
   return (
     <>
-      {topics.length === 0 ? (
-        <p>No topics available.</p>
-      ) : (
-        topics.map((t) => (
-          <div
-            key={t._id}
-            className="p-4 border border-slate-300 my-3 flex justify-between gap-5 items-start bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200"
-          >
-            <div>
-              <h2 className="font-bold text-2xl">{t.title}</h2>
-              <div>{t.description}</div>
-            </div>
-
-            <div className="flex gap-2">
-              <RemoveBtn id={t._id} />
-              <Link href={`/editTopic/${t._id}`}>
-                <HiPencilAlt size={24} />
-              </Link>
-            </div>
+      {topics.map((t) => (
+        <div
+          key={t._id}
+          className="p-4 border border-slate-300 my-3 flex justify-between gap-5 items-start bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200"
+        >
+          <div>
+            <h2 className="font-bold text-2xl">{t.title}</h2>
+            <div>{t.description}</div>
           </div>
-        ))
-      )}
+
+          <div className="flex gap-2">
+            <RemoveBtn id={t._id} />
+            <Link href={`/editTopic/${t._id}`}>
+              <HiPencilAlt size={24} />
+            </Link>
+          </div>
+        </div>
+      ))}
     </>
   );
-}
+};
+
+export default TopicsList;
