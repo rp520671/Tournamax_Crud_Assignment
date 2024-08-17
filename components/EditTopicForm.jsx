@@ -13,10 +13,10 @@ export default function EditTopicForm({ id, title, description }) {
     e.preventDefault();
 
     try {
-      const res = await fetch(`/api/topics?id=${id}`, {
+      const res = await fetch(`/api/topics/${id}`, {
         method: "PUT",
         headers: {
-          "Content-type": "application/json",
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({ newTitle, newDescription }),
       });
@@ -25,8 +25,8 @@ export default function EditTopicForm({ id, title, description }) {
         throw new Error("Failed to update topic");
       }
 
-      router.refresh();
-      router.push("/");
+      router.push('/'); // Navigate to the home page
+      router.refresh(); // Reload the page to fetch updated data
     } catch (error) {
       console.log(error);
     }
