@@ -50,9 +50,8 @@ const TopicsList = () => {
           <div className="flex gap-2">
             <RemoveBtn id={t._id} />
             <Link href={`/editTopic/${t._id}`} passHref>
-              <a aria-label={`Edit ${t.title}`}>
                 <HiPencilAlt size={24} />
-              </a>
+              
             </Link>
           </div>
         </div>
